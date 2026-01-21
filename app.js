@@ -126,6 +126,7 @@
       items,
       correct: 0,
       modeCache: null, // used for typing correctness
+      typingMisses: new Set(),
     };
     renderQuiz();
   }
@@ -255,13 +256,13 @@
       el("hr", {class:"sep"}),
 
       el("div", {class:"row"}, [
-        el("button", {class:"btn secondary", onclick: () => startQuiz()}, ["Start quiz"]),
         el("button", {class:"btn", onclick: () => {
           // reset
           state = {...DEFAULTS};
           saveState();
           renderSettings();
-        }}, ["Reset"])
+        }}, ["Reset"]),
+        el("button", {class:"btn secondary", onclick: () => startQuiz()}, ["Start quiz"])
       ])
     ]);
 
@@ -408,11 +409,18 @@
         }
 
         if(ok){
-          quiz.correct++;
-          feedback.textContent = "✅ correct";
-          feedback.style.color = "rgba(34,197,94,0.9)";
+          const alreadyMissed = quiz.typingMisses.has(quiz.idx);
+          if(!alreadyMissed){
+            quiz.correct++;
+            feedback.textContent = "✅ correct";
+            feedback.style.color = "rgba(34,197,94,0.9)";
+          }else{
+            feedback.textContent = "✅ correct (but already missed)";
+            feedback.style.color = "rgba(245,158,11,0.9)";
+          }
           setTimeout(() => nextQuestion(), 600);
         }else{
+          quiz.typingMisses.add(quiz.idx);
           feedback.textContent = `❌ not quite. Correct: ${meta.answer}`;
           feedback.style.color = "rgba(239,68,68,0.9)";
         }

@@ -28,7 +28,35 @@ body{
   padding: 14px 14px 28px;
 }
 .topbar{
-  padding: 10px 6px 16px;
+  padding: 14px;
+  border-radius: calc(var(--radius) + 6px);
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(99,102,241,0.18), rgba(15,23,42,0.75));
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+}
+.title-row{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+}
+.flower-icon{
+  width: 44px;
+  height: 44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-size: 22px;
+  color: #f472b6;
+  text-shadow: 0 6px 16px rgba(244,114,182,0.45);
+}
+.title-copy{
+  display:flex;
+  flex-direction:column;
+  gap: 4px;
 }
 .app-title{
   font-size: 34px;
