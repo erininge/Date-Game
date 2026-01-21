@@ -134,6 +134,8 @@
     const root = document.getElementById("root");
     root.innerHTML = "";
 
+    const selectedItems = eligibleItems();
+
     const card = el("div", {class:"card"}, [
       el("div", {class:"h1"}, ["Study setup"]),
 
@@ -238,6 +240,14 @@
         return sel;
       })(),
 
+      el("div", {class:"row"}, [
+        el("button", {class:"btn secondary", onclick: () => renderSelectedWordsModal(selectedItems)}, ["View selected words"]),
+        el("div", {class:"selection-count"}, [
+          el("div", {class:"label"}, ["Selected words"]),
+          el("div", {class:"count"}, [`${selectedItems.length}`])
+        ])
+      ]),
+
       el("div", {class:"help"}, [
         "Tip: If you're doing typing mode with Display = Both, you can type either the kana OR the kanji answer. Spaces are ignored."
       ]),
@@ -256,6 +266,41 @@
     ]);
 
     root.appendChild(card);
+  }
+
+  function renderSelectedWordsModal(items){
+    const overlay = el("div", {class:"modal-backdrop"});
+    const closeModal = () => overlay.remove();
+
+    const list = el("div", {class:"word-list"});
+    if(items.length === 0){
+      list.appendChild(el("div", {class:"word-empty"}, ["No words match your current selection."]));
+    }else{
+      items.forEach(item => {
+        list.appendChild(el("div", {class:"word-row"}, [
+          el("div", {class:"word-jp"}, [getJP(item)]),
+          el("div", {class:"word-en"}, [item.en])
+        ]));
+      });
+    }
+
+    const modal = el("div", {class:"modal"}, [
+      el("div", {class:"modal-header"}, [
+        el("div", {class:"h2"}, ["Selected words"]),
+        el("button", {class:"linkish", onclick: closeModal}, ["Close"])
+      ]),
+      el("div", {class:"modal-sub"}, [
+        `${items.length} words • ${CATEGORY_LABELS[state.category]}`
+      ]),
+      list
+    ]);
+
+    overlay.addEventListener("click", (event) => {
+      if(event.target === overlay) closeModal();
+    });
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
   }
 
   function pickAnswerMode(){
