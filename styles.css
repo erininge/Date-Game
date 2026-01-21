@@ -1,0 +1,174 @@
+/* Dark, rounded, soft aesthetic inspired by your screenshot */
+:root{
+  --bg:#0b1020;
+  --card:#0f172a;
+  --card2:#0b1225;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --border:rgba(255,255,255,0.08);
+  --shadow:0 10px 30px rgba(0,0,0,0.35);
+  --radius:18px;
+  --radius2:14px;
+  --pad:18px;
+  --focus:rgba(99,102,241,0.5);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: radial-gradient(1200px 700px at 20% 0%, rgba(99,102,241,0.20), transparent 55%),
+              radial-gradient(900px 600px at 90% 30%, rgba(14,165,233,0.16), transparent 50%),
+              var(--bg);
+  color:var(--text);
+}
+.app{
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 14px 14px 28px;
+}
+.topbar{
+  padding: 10px 6px 16px;
+}
+.app-title{
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.app-subtitle{
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: var(--pad);
+}
+.h1{
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0 0 14px 0;
+}
+.label{
+  color: var(--muted);
+  font-size: 13px;
+  margin: 16px 0 8px;
+}
+.select, .input, .btn{
+  width: 100%;
+  border-radius: var(--radius2);
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.75);
+  color: var(--text);
+  padding: 14px 14px;
+  font-size: 16px;
+  outline: none;
+}
+.select:focus, .input:focus{
+  box-shadow: 0 0 0 4px var(--focus);
+}
+.row{
+  display:flex;
+  gap: 10px;
+}
+.row > *{flex:1}
+.help{
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+  margin-top: 10px;
+}
+.footer{
+  display:flex;
+  gap: 8px;
+  justify-content:center;
+  align-items:center;
+  padding: 14px 6px 0;
+  color: var(--muted);
+}
+.linkish{
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+.linkish:hover{
+  border-color: var(--border);
+  color: var(--text);
+}
+.dot{opacity:.6}
+.small{font-size: 12px}
+.quiz-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.pill{
+  border:1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.question{
+  font-size: 30px;
+  font-weight: 800;
+  margin: 18px 0 10px;
+  letter-spacing: -0.02em;
+}
+.subq{
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+.choices{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.choice{
+  text-align:left;
+  cursor:pointer;
+  border-radius: var(--radius2);
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.55);
+  padding: 14px;
+  font-size: 16px;
+}
+.choice:hover{border-color: rgba(255,255,255,0.18)}
+.choice.correct{
+  border-color: rgba(34,197,94,0.7);
+  background: rgba(34,197,94,0.12);
+}
+.choice.wrong{
+  border-color: rgba(239,68,68,0.7);
+  background: rgba(239,68,68,0.10);
+}
+.btn{
+  cursor:pointer;
+  font-weight: 700;
+  background: rgba(99,102,241,0.22);
+}
+.btn:hover{background: rgba(99,102,241,0.28)}
+.btn.secondary{
+  background: rgba(148,163,184,0.12);
+}
+hr.sep{
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 16px 0;
+}
+.kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
