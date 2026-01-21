@@ -426,7 +426,10 @@
         }
       });
 
-      btnRow.children[1].addEventListener("click", () => nextQuestion());
+      btnRow.children[1].addEventListener("click", () => {
+        quiz.typingMisses.add(quiz.idx);
+        nextQuestion();
+      });
 
       card.appendChild(inp);
       card.appendChild(el("div", {style:"height:10px"}));
