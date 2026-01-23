@@ -1,6 +1,8 @@
 (() => {
   const STATE_KEY = "kats-date-game-state-v1";
   const DATA_URL = "date_game_data.json";
+  const AUDIO_MANIFEST_URL = "Audio/manifest.json";
+  const VOICEVOX_SPEAKER = "東北きりたん（ノーマル）";
 
   const CATEGORY_LABELS = {
     day_of_month: "Day of the month (example: 7th)",
@@ -22,6 +24,11 @@
   let DATA = null;
   let state = loadState();
   let quiz = null;
+  let audioIndex = new Map();
+  let audioManifestLoaded = false;
+  let audioManifestError = false;
+  let audioContext = null;
+  let audioBufferCache = new Map();
 
   function loadState(){
     try{
@@ -67,6 +74,61 @@
     return item.jp_kana || item.jp_kanji || "";
   }
 
+  function audioKey(item){
+    return item.id;
+  }
+
+  function getAudioPath(item){
+    const key = audioKey(item);
+    return audioIndex.get(key) || null;
+  }
+
+  function getAudioContext(){
+    if(!audioContext){
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if(!Ctx) return null;
+      audioContext = new Ctx();
+    }
+    return audioContext;
+  }
+
+  async function getAudioBuffer(src, ctx){
+    if(audioBufferCache.has(src)) return audioBufferCache.get(src);
+    try{
+      const res = await fetch(src);
+      const data = await res.arrayBuffer();
+      const buffer = await ctx.decodeAudioData(data);
+      audioBufferCache.set(src, buffer);
+      return buffer;
+    }catch(e){
+      return null;
+    }
+  }
+
+  async function playAudioForItem(item){
+    const src = getAudioPath(item);
+    if(!src) return;
+    const ctx = getAudioContext();
+    if(!ctx) return;
+    try{
+      await ctx.resume();
+      const buffer = await getAudioBuffer(src, ctx);
+      if(!buffer) return;
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.start(0);
+    }catch(e){
+      // ignore playback errors
+    }
+  }
+
+  function buildVoicevoxLine(item, index){
+    const text = item.jp_kana || item.jp_kanji || item.en || "";
+    const idx = String(index).padStart(3, "0");
+    return `${idx}_${VOICEVOX_SPEAKER}_${text}`;
+  }
+
   function getPromptAndAnswer(item){
     // Determine direction
     let dir = state.questionMode;
@@ -99,6 +161,40 @@
   function focusModeAvailable(){
     const items = DATA.items.filter(x => x.category === state.category);
     return items.some(x => x.irregular);
+  }
+
+  async function loadAudioManifest(){
+    audioIndex = new Map();
+    audioManifestLoaded = false;
+    audioManifestError = false;
+    try{
+      const res = await fetch(AUDIO_MANIFEST_URL, {cache: "no-store"});
+      if(!res.ok){
+        return;
+      }
+      const data = await res.json();
+      let files = [];
+      if(Array.isArray(data)) files = data;
+      else if(Array.isArray(data.files)) files = data.files;
+      else if(Array.isArray(data.items)) files = data.items;
+      else if(Array.isArray(data.manifest)) files = data.manifest;
+
+      files.forEach((file) => {
+        if(typeof file !== "string") return;
+        const clean = file.replace(/^\.\//, "");
+        const path = clean.startsWith("Audio/") ? clean : `Audio/${clean}`;
+        const base = clean.split("/").pop().replace(/\.[^.]+$/, "");
+        if(base) audioIndex.set(base, path);
+      });
+      audioManifestLoaded = true;
+    }catch(e){
+      audioManifestError = true;
+    }
+  }
+
+  function getMissingAudioItems(){
+    if(!audioManifestLoaded) return DATA.items.slice();
+    return DATA.items.filter(item => !audioIndex.has(audioKey(item)));
   }
 
   function sample(arr, n){
@@ -249,6 +345,23 @@
         ])
       ]),
 
+      (() => {
+        const missingItems = getMissingAudioItems();
+        const totalItems = DATA.items.length;
+        const availableCount = Math.max(0, totalItems - missingItems.length);
+        const audioLabel = audioManifestLoaded
+          ? `${availableCount} ready • ${missingItems.length} missing`
+          : (audioManifestError ? "Manifest error" : "Manifest not loaded");
+
+        return el("div", {class:"row"}, [
+          el("button", {class:"btn secondary", onclick: () => renderMissingAudio()}, ["Missing audio"]),
+          el("div", {class:"selection-count"}, [
+            el("div", {class:"label"}, ["Audio status"]),
+            el("div", {class:"count"}, [audioLabel])
+          ])
+        ]);
+      })(),
+
       el("div", {class:"help"}, [
         "Tip: If you're doing typing mode with Display = Both, you can type either the kana OR the kanji answer. Spaces are ignored."
       ]),
@@ -304,6 +417,67 @@
     document.body.appendChild(overlay);
   }
 
+  function renderMissingAudio(){
+    const root = document.getElementById("root");
+    root.innerHTML = "";
+
+    const missingItems = getMissingAudioItems();
+
+    const title = audioManifestLoaded
+      ? "Missing audio"
+      : "Missing audio (manifest not loaded)";
+    const subtitle = audioManifestLoaded
+      ? `${missingItems.length} missing • ${DATA.items.length} total`
+      : (audioManifestError
+        ? "Audio manifest found, but it could not be parsed."
+        : "Add Audio/manifest.json then refresh to see exact missing files.");
+
+    const list = el("div", {class:"audio-list"});
+    if(missingItems.length === 0){
+      list.appendChild(el("div", {class:"word-empty"}, ["Everything has audio."]));
+    }else{
+      missingItems.forEach((item) => {
+        list.appendChild(el("div", {class:"audio-row"}, [
+          el("div", {class:"audio-main"}, [getJP(item)]),
+          el("div", {class:"audio-sub"}, [item.en]),
+          el("div", {class:"audio-file"}, [`Expected: ${audioKey(item)}.wav`])
+        ]));
+      });
+    }
+
+    const downloadBtn = el("button", {class:"btn secondary"}, ["Download Voicevox list (.txt)"]);
+    downloadBtn.addEventListener("click", () => {
+      const lines = missingItems.map((item, idx) => buildVoicevoxLine(item, idx + 1));
+      const blob = new Blob([lines.join("\n")], {type: "text/plain"});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "voicevox_missing_audio.txt";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    });
+    if(missingItems.length === 0){
+      downloadBtn.disabled = true;
+    }
+
+    const card = el("div", {class:"card"}, [
+      el("div", {class:"quiz-top"}, [
+        el("div", {class:"pill"}, [title]),
+        el("button", {class:"linkish", onclick: () => renderSettings()}, ["Back"])
+      ]),
+      el("div", {class:"subq"}, [subtitle]),
+      el("div", {class:"row"}, [downloadBtn]),
+      el("div", {class:"help"}, [
+        "Audio files should live in the Audio/ folder and be named with the item id (example: month_1.wav)."
+      ]),
+      list
+    ]);
+
+    root.appendChild(card);
+  }
+
   function pickAnswerMode(){
     if(state.answerMode === "mixed"){
       return Math.random() < 0.5 ? "multiple" : "typing";
@@ -341,6 +515,7 @@
     const item = quiz.items[quiz.idx];
     const meta = getPromptAndAnswer(item);
     const mode = pickAnswerMode();
+    const audioPath = getAudioPath(item);
 
     const top = el("div", {class:"quiz-top"}, [
       el("div", {class:"pill"}, [`${quiz.idx+1} / ${quiz.items.length}`]),
@@ -354,6 +529,12 @@
     ]);
 
     const card = el("div", {class:"card"}, [top, q, sub]);
+    if(audioPath){
+      const audioRow = el("div", {class:"audio-controls"}, [
+        el("button", {class:"btn secondary small", onclick: () => playAudioForItem(item)}, ["Play audio"])
+      ]);
+      card.appendChild(audioRow);
+    }
 
     if(mode === "multiple"){
       const choices = buildChoices(meta.answer, meta.dir);
@@ -479,6 +660,7 @@
     }
     const res = await fetch(DATA_URL);
     DATA = await res.json();
+    await loadAudioManifest();
 
     // Footer buttons
     document.getElementById("btnSettings").addEventListener("click", () => renderSettings());

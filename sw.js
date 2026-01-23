@@ -1,4 +1,4 @@
-const VERSION = "1.7";
+const VERSION = "1.8";
 const CACHE_NAME = `kats-date-game-cache-v${VERSION}`;
 const ASSETS = [
   "./",
@@ -6,6 +6,7 @@ const ASSETS = [
   "./styles.css",
   "./app.js",
   "./manifest.json",
+  "./Audio/manifest.json",
   "./date_game_data.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
