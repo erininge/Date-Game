@@ -213,6 +213,23 @@ body{
   justify-content:flex-start;
   margin-bottom: 14px;
 }
+.toggle-row{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.toggle-row input{
+  accent-color: rgba(99,102,241,0.9);
+}
+.volume-row{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.slider{
+  width: 180px;
+}
 hr.sep{
   border: none;
   border-top: 1px solid var(--border);
