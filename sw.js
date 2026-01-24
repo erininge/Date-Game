@@ -1,6 +1,6 @@
 // Changelog:
-// - v2.0.0: token-based audio sequencing, base audio tokens, caching improvements, cache bump.
-const VERSION = "2.0.0";
+// - v2.0.1: audio hotkey, typing enter-to-next behavior, cache bump.
+const VERSION = "2.0.1";
 const CACHE_NAME = `kats-date-game-cache-v${VERSION}`;
 const ASSETS = [
   "./",
