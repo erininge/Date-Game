@@ -1,13 +1,13 @@
 // Changelog:
-// - v2.0.1: audio hotkey, typing enter-to-next behavior, cache bump.
+// - v2.0.3: update audio hotkey, auto-focus typing input on keypress.
 (() => {
-  const APP_VERSION = "2.0.1";
+  const APP_VERSION = "2.0.3";
   const STATE_KEY = "kats-date-game-state-v1";
   const DATA_URL = "date_game_data.json";
   const AUDIO_MANIFEST_URL = "Audio/base/manifest.json";
   const VOICEVOX_SPEAKER = "東北きりたん（ノーマル）";
   const DEFAULT_PAUSE_TOKEN = "pause_120";
-  const AUDIO_HOTKEY = "KeyP";
+  const AUDIO_HOTKEY = "Equal";
 
   const CATEGORY_LABELS = {
     day_of_month: "Day of the month (example: 7th)",
@@ -135,6 +135,15 @@
     if(!currentAudioTokens || currentAudioTokens.length === 0) return;
     event.preventDefault();
     playAudioSequence(currentAudioTokens);
+  }
+
+  function handleTypingAutofocus(event){
+    if(event.code === AUDIO_HOTKEY) return;
+    if(isTypingTarget(event.target)) return;
+    if(event.key.length !== 1 && event.key !== "Backspace" && event.key !== "Delete") return;
+    const input = document.getElementById("answer-input");
+    if(!input) return;
+    input.focus();
   }
 
   function playBuffer(buffer, ctx, sequenceId){
@@ -737,7 +746,7 @@
     if(audioTokens.length > 0){
       const audioRow = el("div", {class:"audio-controls"}, [
         el("button", {class:"btn secondary small", onclick: () => playAudioSequence(audioTokens)}, ["Play audio"]),
-        el("div", {class:"help"}, ["Shortcut: P"])
+        el("div", {class:"help"}, ["Shortcut: ="])
       ]);
       card.appendChild(audioRow);
     }
@@ -768,7 +777,7 @@
 
       card.appendChild(box);
     }else{
-      const inp = el("input", {class:"input", type:"text", placeholder:"type your answer"});
+      const inp = el("input", {id:"answer-input", class:"input", type:"text", placeholder:"type your answer"});
       const feedback = el("div", {class:"help"}, [""]);
       const btnRow = el("div", {class:"row"}, [
         el("button", {class:"btn secondary"}, ["Check"]),
@@ -904,6 +913,7 @@
     document.getElementById("btnSettings").addEventListener("click", () => renderSettings());
     document.getElementById("btnStartQuick").addEventListener("click", () => startQuiz());
     document.addEventListener("keydown", handleAudioHotkey);
+    document.addEventListener("keydown", handleTypingAutofocus);
 
     renderSettings();
   }

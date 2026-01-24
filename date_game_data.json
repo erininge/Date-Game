@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "items": [
     {
       "id": "month_1",
@@ -377,7 +377,7 @@
       "category": "day_of_month",
       "en": "24th",
       "en_alt": "24",
-      "jp_kana": "にじゅうよんにち",
+      "jp_kana": "にじゅうよっか",
       "jp_kanji": "24日",
       "irregular": false
     },
@@ -632,7 +632,7 @@
       "id": "date_1_24",
       "category": "dates",
       "en": "January 24th (1/24)",
-      "jp_kana": "いちがつ にじゅうよんにち",
+      "jp_kana": "いちがつ にじゅうよっか",
       "jp_kanji": "1月24日",
       "irregular": false
     },
@@ -880,7 +880,7 @@
       "id": "date_2_24",
       "category": "dates",
       "en": "February 24th (2/24)",
-      "jp_kana": "にがつ にじゅうよんにち",
+      "jp_kana": "にがつ にじゅうよっか",
       "jp_kanji": "2月24日",
       "irregular": false
     },
@@ -1112,7 +1112,7 @@
       "id": "date_3_24",
       "category": "dates",
       "en": "March 24th (3/24)",
-      "jp_kana": "さんがつ にじゅうよんにち",
+      "jp_kana": "さんがつ にじゅうよっか",
       "jp_kanji": "3月24日",
       "irregular": false
     },
@@ -1360,7 +1360,7 @@
       "id": "date_4_24",
       "category": "dates",
       "en": "April 24th (4/24)",
-      "jp_kana": "よんがつ にじゅうよんにち",
+      "jp_kana": "よんがつ にじゅうよっか",
       "jp_kanji": "4月24日",
       "irregular": true
     },
@@ -1600,7 +1600,7 @@
       "id": "date_5_24",
       "category": "dates",
       "en": "May 24th (5/24)",
-      "jp_kana": "ごがつ にじゅうよんにち",
+      "jp_kana": "ごがつ にじゅうよっか",
       "jp_kanji": "5月24日",
       "irregular": false
     },
@@ -1848,7 +1848,7 @@
       "id": "date_6_24",
       "category": "dates",
       "en": "June 24th (6/24)",
-      "jp_kana": "ろくがつ にじゅうよんにち",
+      "jp_kana": "ろくがつ にじゅうよっか",
       "jp_kanji": "6月24日",
       "irregular": false
     },
@@ -2088,7 +2088,7 @@
       "id": "date_7_24",
       "category": "dates",
       "en": "July 24th (7/24)",
-      "jp_kana": "しちがつ にじゅうよんにち",
+      "jp_kana": "しちがつ にじゅうよっか",
       "jp_kanji": "7月24日",
       "irregular": true
     },
@@ -2336,7 +2336,7 @@
       "id": "date_8_24",
       "category": "dates",
       "en": "August 24th (8/24)",
-      "jp_kana": "はちがつ にじゅうよんにち",
+      "jp_kana": "はちがつ にじゅうよっか",
       "jp_kanji": "8月24日",
       "irregular": false
     },
@@ -2584,7 +2584,7 @@
       "id": "date_9_24",
       "category": "dates",
       "en": "September 24th (9/24)",
-      "jp_kana": "くがつ にじゅうよんにち",
+      "jp_kana": "くがつ にじゅうよっか",
       "jp_kanji": "9月24日",
       "irregular": true
     },
@@ -2824,7 +2824,7 @@
       "id": "date_10_24",
       "category": "dates",
       "en": "October 24th (10/24)",
-      "jp_kana": "じゅうがつ にじゅうよんにち",
+      "jp_kana": "じゅうがつ にじゅうよっか",
       "jp_kanji": "10月24日",
       "irregular": false
     },
@@ -3072,7 +3072,7 @@
       "id": "date_11_24",
       "category": "dates",
       "en": "November 24th (11/24)",
-      "jp_kana": "じゅういちがつ にじゅうよんにち",
+      "jp_kana": "じゅういちがつ にじゅうよっか",
       "jp_kanji": "11月24日",
       "irregular": false
     },
@@ -3312,7 +3312,7 @@
       "id": "date_12_24",
       "category": "dates",
       "en": "December 24th (12/24)",
-      "jp_kana": "じゅうにがつ にじゅうよんにち",
+      "jp_kana": "じゅうにがつ にじゅうよっか",
       "jp_kanji": "12月24日",
       "irregular": false
     },
@@ -3560,7 +3560,7 @@
       "id": "fulldate_0_1_24",
       "category": "full_date",
       "en": "Monday, January 24th (1/24)",
-      "jp_kana": "げつようび いちがつ にじゅうよんにち",
+      "jp_kana": "げつようび いちがつ にじゅうよっか",
       "jp_kanji": "月曜日 1月24日",
       "irregular": false
     },
@@ -3808,7 +3808,7 @@
       "id": "fulldate_0_2_24",
       "category": "full_date",
       "en": "Monday, February 24th (2/24)",
-      "jp_kana": "げつようび にがつ にじゅうよんにち",
+      "jp_kana": "げつようび にがつ にじゅうよっか",
       "jp_kanji": "月曜日 2月24日",
       "irregular": false
     },
@@ -4040,7 +4040,7 @@
       "id": "fulldate_0_3_24",
       "category": "full_date",
       "en": "Monday, March 24th (3/24)",
-      "jp_kana": "げつようび さんがつ にじゅうよんにち",
+      "jp_kana": "げつようび さんがつ にじゅうよっか",
       "jp_kanji": "月曜日 3月24日",
       "irregular": false
     },
@@ -4288,7 +4288,7 @@
       "id": "fulldate_0_4_24",
       "category": "full_date",
       "en": "Monday, April 24th (4/24)",
-      "jp_kana": "げつようび よんがつ にじゅうよんにち",
+      "jp_kana": "げつようび よんがつ にじゅうよっか",
       "jp_kanji": "月曜日 4月24日",
       "irregular": true
     },
@@ -4528,7 +4528,7 @@
       "id": "fulldate_0_5_24",
       "category": "full_date",
       "en": "Monday, May 24th (5/24)",
-      "jp_kana": "げつようび ごがつ にじゅうよんにち",
+      "jp_kana": "げつようび ごがつ にじゅうよっか",
       "jp_kanji": "月曜日 5月24日",
       "irregular": false
     },
@@ -4776,7 +4776,7 @@
       "id": "fulldate_0_6_24",
       "category": "full_date",
       "en": "Monday, June 24th (6/24)",
-      "jp_kana": "げつようび ろくがつ にじゅうよんにち",
+      "jp_kana": "げつようび ろくがつ にじゅうよっか",
       "jp_kanji": "月曜日 6月24日",
       "irregular": false
     },
@@ -5016,7 +5016,7 @@
       "id": "fulldate_0_7_24",
       "category": "full_date",
       "en": "Monday, July 24th (7/24)",
-      "jp_kana": "げつようび しちがつ にじゅうよんにち",
+      "jp_kana": "げつようび しちがつ にじゅうよっか",
       "jp_kanji": "月曜日 7月24日",
       "irregular": true
     },
@@ -5264,7 +5264,7 @@
       "id": "fulldate_0_8_24",
       "category": "full_date",
       "en": "Monday, August 24th (8/24)",
-      "jp_kana": "げつようび はちがつ にじゅうよんにち",
+      "jp_kana": "げつようび はちがつ にじゅうよっか",
       "jp_kanji": "月曜日 8月24日",
       "irregular": false
     },
@@ -5512,7 +5512,7 @@
       "id": "fulldate_0_9_24",
       "category": "full_date",
       "en": "Monday, September 24th (9/24)",
-      "jp_kana": "げつようび くがつ にじゅうよんにち",
+      "jp_kana": "げつようび くがつ にじゅうよっか",
       "jp_kanji": "月曜日 9月24日",
       "irregular": true
     },
@@ -5752,7 +5752,7 @@
       "id": "fulldate_0_10_24",
       "category": "full_date",
       "en": "Monday, October 24th (10/24)",
-      "jp_kana": "げつようび じゅうがつ にじゅうよんにち",
+      "jp_kana": "げつようび じゅうがつ にじゅうよっか",
       "jp_kanji": "月曜日 10月24日",
       "irregular": false
     },
@@ -6000,7 +6000,7 @@
       "id": "fulldate_0_11_24",
       "category": "full_date",
       "en": "Monday, November 24th (11/24)",
-      "jp_kana": "げつようび じゅういちがつ にじゅうよんにち",
+      "jp_kana": "げつようび じゅういちがつ にじゅうよっか",
       "jp_kanji": "月曜日 11月24日",
       "irregular": false
     },
@@ -6240,7 +6240,7 @@
       "id": "fulldate_0_12_24",
       "category": "full_date",
       "en": "Monday, December 24th (12/24)",
-      "jp_kana": "げつようび じゅうにがつ にじゅうよんにち",
+      "jp_kana": "げつようび じゅうにがつ にじゅうよっか",
       "jp_kanji": "月曜日 12月24日",
       "irregular": false
     },
@@ -6488,7 +6488,7 @@
       "id": "fulldate_1_1_24",
       "category": "full_date",
       "en": "Tuesday, January 24th (1/24)",
-      "jp_kana": "かようび いちがつ にじゅうよんにち",
+      "jp_kana": "かようび いちがつ にじゅうよっか",
       "jp_kanji": "火曜日 1月24日",
       "irregular": false
     },
@@ -6736,7 +6736,7 @@
       "id": "fulldate_1_2_24",
       "category": "full_date",
       "en": "Tuesday, February 24th (2/24)",
-      "jp_kana": "かようび にがつ にじゅうよんにち",
+      "jp_kana": "かようび にがつ にじゅうよっか",
       "jp_kanji": "火曜日 2月24日",
       "irregular": false
     },
@@ -6968,7 +6968,7 @@
       "id": "fulldate_1_3_24",
       "category": "full_date",
       "en": "Tuesday, March 24th (3/24)",
-      "jp_kana": "かようび さんがつ にじゅうよんにち",
+      "jp_kana": "かようび さんがつ にじゅうよっか",
       "jp_kanji": "火曜日 3月24日",
       "irregular": false
     },
@@ -7216,7 +7216,7 @@
       "id": "fulldate_1_4_24",
       "category": "full_date",
       "en": "Tuesday, April 24th (4/24)",
-      "jp_kana": "かようび よんがつ にじゅうよんにち",
+      "jp_kana": "かようび よんがつ にじゅうよっか",
       "jp_kanji": "火曜日 4月24日",
       "irregular": true
     },
@@ -7456,7 +7456,7 @@
       "id": "fulldate_1_5_24",
       "category": "full_date",
       "en": "Tuesday, May 24th (5/24)",
-      "jp_kana": "かようび ごがつ にじゅうよんにち",
+      "jp_kana": "かようび ごがつ にじゅうよっか",
       "jp_kanji": "火曜日 5月24日",
       "irregular": false
     },
@@ -7704,7 +7704,7 @@
       "id": "fulldate_1_6_24",
       "category": "full_date",
       "en": "Tuesday, June 24th (6/24)",
-      "jp_kana": "かようび ろくがつ にじゅうよんにち",
+      "jp_kana": "かようび ろくがつ にじゅうよっか",
       "jp_kanji": "火曜日 6月24日",
       "irregular": false
     },
@@ -7944,7 +7944,7 @@
       "id": "fulldate_1_7_24",
       "category": "full_date",
       "en": "Tuesday, July 24th (7/24)",
-      "jp_kana": "かようび しちがつ にじゅうよんにち",
+      "jp_kana": "かようび しちがつ にじゅうよっか",
       "jp_kanji": "火曜日 7月24日",
       "irregular": true
     },
@@ -8192,7 +8192,7 @@
       "id": "fulldate_1_8_24",
       "category": "full_date",
       "en": "Tuesday, August 24th (8/24)",
-      "jp_kana": "かようび はちがつ にじゅうよんにち",
+      "jp_kana": "かようび はちがつ にじゅうよっか",
       "jp_kanji": "火曜日 8月24日",
       "irregular": false
     },
@@ -8440,7 +8440,7 @@
       "id": "fulldate_1_9_24",
       "category": "full_date",
       "en": "Tuesday, September 24th (9/24)",
-      "jp_kana": "かようび くがつ にじゅうよんにち",
+      "jp_kana": "かようび くがつ にじゅうよっか",
       "jp_kanji": "火曜日 9月24日",
       "irregular": true
     },
@@ -8680,7 +8680,7 @@
       "id": "fulldate_1_10_24",
       "category": "full_date",
       "en": "Tuesday, October 24th (10/24)",
-      "jp_kana": "かようび じゅうがつ にじゅうよんにち",
+      "jp_kana": "かようび じゅうがつ にじゅうよっか",
       "jp_kanji": "火曜日 10月24日",
       "irregular": false
     },
@@ -8928,7 +8928,7 @@
       "id": "fulldate_1_11_24",
       "category": "full_date",
       "en": "Tuesday, November 24th (11/24)",
-      "jp_kana": "かようび じゅういちがつ にじゅうよんにち",
+      "jp_kana": "かようび じゅういちがつ にじゅうよっか",
       "jp_kanji": "火曜日 11月24日",
       "irregular": false
     },
@@ -9168,7 +9168,7 @@
       "id": "fulldate_1_12_24",
       "category": "full_date",
       "en": "Tuesday, December 24th (12/24)",
-      "jp_kana": "かようび じゅうにがつ にじゅうよんにち",
+      "jp_kana": "かようび じゅうにがつ にじゅうよっか",
       "jp_kanji": "火曜日 12月24日",
       "irregular": false
     },
@@ -9416,7 +9416,7 @@
       "id": "fulldate_2_1_24",
       "category": "full_date",
       "en": "Wednesday, January 24th (1/24)",
-      "jp_kana": "すいようび いちがつ にじゅうよんにち",
+      "jp_kana": "すいようび いちがつ にじゅうよっか",
       "jp_kanji": "水曜日 1月24日",
       "irregular": false
     },
@@ -9664,7 +9664,7 @@
       "id": "fulldate_2_2_24",
       "category": "full_date",
       "en": "Wednesday, February 24th (2/24)",
-      "jp_kana": "すいようび にがつ にじゅうよんにち",
+      "jp_kana": "すいようび にがつ にじゅうよっか",
       "jp_kanji": "水曜日 2月24日",
       "irregular": false
     },
@@ -9896,7 +9896,7 @@
       "id": "fulldate_2_3_24",
       "category": "full_date",
       "en": "Wednesday, March 24th (3/24)",
-      "jp_kana": "すいようび さんがつ にじゅうよんにち",
+      "jp_kana": "すいようび さんがつ にじゅうよっか",
       "jp_kanji": "水曜日 3月24日",
       "irregular": false
     },
@@ -10144,7 +10144,7 @@
       "id": "fulldate_2_4_24",
       "category": "full_date",
       "en": "Wednesday, April 24th (4/24)",
-      "jp_kana": "すいようび よんがつ にじゅうよんにち",
+      "jp_kana": "すいようび よんがつ にじゅうよっか",
       "jp_kanji": "水曜日 4月24日",
       "irregular": true
     },
@@ -10384,7 +10384,7 @@
       "id": "fulldate_2_5_24",
       "category": "full_date",
       "en": "Wednesday, May 24th (5/24)",
-      "jp_kana": "すいようび ごがつ にじゅうよんにち",
+      "jp_kana": "すいようび ごがつ にじゅうよっか",
       "jp_kanji": "水曜日 5月24日",
       "irregular": false
     },
@@ -10632,7 +10632,7 @@
       "id": "fulldate_2_6_24",
       "category": "full_date",
       "en": "Wednesday, June 24th (6/24)",
-      "jp_kana": "すいようび ろくがつ にじゅうよんにち",
+      "jp_kana": "すいようび ろくがつ にじゅうよっか",
       "jp_kanji": "水曜日 6月24日",
       "irregular": false
     },
@@ -10872,7 +10872,7 @@
       "id": "fulldate_2_7_24",
       "category": "full_date",
       "en": "Wednesday, July 24th (7/24)",
-      "jp_kana": "すいようび しちがつ にじゅうよんにち",
+      "jp_kana": "すいようび しちがつ にじゅうよっか",
       "jp_kanji": "水曜日 7月24日",
       "irregular": true
     },
@@ -11120,7 +11120,7 @@
       "id": "fulldate_2_8_24",
       "category": "full_date",
       "en": "Wednesday, August 24th (8/24)",
-      "jp_kana": "すいようび はちがつ にじゅうよんにち",
+      "jp_kana": "すいようび はちがつ にじゅうよっか",
       "jp_kanji": "水曜日 8月24日",
       "irregular": false
     },
@@ -11368,7 +11368,7 @@
       "id": "fulldate_2_9_24",
       "category": "full_date",
       "en": "Wednesday, September 24th (9/24)",
-      "jp_kana": "すいようび くがつ にじゅうよんにち",
+      "jp_kana": "すいようび くがつ にじゅうよっか",
       "jp_kanji": "水曜日 9月24日",
       "irregular": true
     },
@@ -11608,7 +11608,7 @@
       "id": "fulldate_2_10_24",
       "category": "full_date",
       "en": "Wednesday, October 24th (10/24)",
-      "jp_kana": "すいようび じゅうがつ にじゅうよんにち",
+      "jp_kana": "すいようび じゅうがつ にじゅうよっか",
       "jp_kanji": "水曜日 10月24日",
       "irregular": false
     },
@@ -11856,7 +11856,7 @@
       "id": "fulldate_2_11_24",
       "category": "full_date",
       "en": "Wednesday, November 24th (11/24)",
-      "jp_kana": "すいようび じゅういちがつ にじゅうよんにち",
+      "jp_kana": "すいようび じゅういちがつ にじゅうよっか",
       "jp_kanji": "水曜日 11月24日",
       "irregular": false
     },
@@ -12096,7 +12096,7 @@
       "id": "fulldate_2_12_24",
       "category": "full_date",
       "en": "Wednesday, December 24th (12/24)",
-      "jp_kana": "すいようび じゅうにがつ にじゅうよんにち",
+      "jp_kana": "すいようび じゅうにがつ にじゅうよっか",
       "jp_kanji": "水曜日 12月24日",
       "irregular": false
     },
@@ -12344,7 +12344,7 @@
       "id": "fulldate_3_1_24",
       "category": "full_date",
       "en": "Thursday, January 24th (1/24)",
-      "jp_kana": "もくようび いちがつ にじゅうよんにち",
+      "jp_kana": "もくようび いちがつ にじゅうよっか",
       "jp_kanji": "木曜日 1月24日",
       "irregular": false
     },
@@ -12592,7 +12592,7 @@
       "id": "fulldate_3_2_24",
       "category": "full_date",
       "en": "Thursday, February 24th (2/24)",
-      "jp_kana": "もくようび にがつ にじゅうよんにち",
+      "jp_kana": "もくようび にがつ にじゅうよっか",
       "jp_kanji": "木曜日 2月24日",
       "irregular": false
     },
@@ -12824,7 +12824,7 @@
       "id": "fulldate_3_3_24",
       "category": "full_date",
       "en": "Thursday, March 24th (3/24)",
-      "jp_kana": "もくようび さんがつ にじゅうよんにち",
+      "jp_kana": "もくようび さんがつ にじゅうよっか",
       "jp_kanji": "木曜日 3月24日",
       "irregular": false
     },
@@ -13072,7 +13072,7 @@
       "id": "fulldate_3_4_24",
       "category": "full_date",
       "en": "Thursday, April 24th (4/24)",
-      "jp_kana": "もくようび よんがつ にじゅうよんにち",
+      "jp_kana": "もくようび よんがつ にじゅうよっか",
       "jp_kanji": "木曜日 4月24日",
       "irregular": true
     },
@@ -13312,7 +13312,7 @@
       "id": "fulldate_3_5_24",
       "category": "full_date",
       "en": "Thursday, May 24th (5/24)",
-      "jp_kana": "もくようび ごがつ にじゅうよんにち",
+      "jp_kana": "もくようび ごがつ にじゅうよっか",
       "jp_kanji": "木曜日 5月24日",
       "irregular": false
     },
@@ -13560,7 +13560,7 @@
       "id": "fulldate_3_6_24",
       "category": "full_date",
       "en": "Thursday, June 24th (6/24)",
-      "jp_kana": "もくようび ろくがつ にじゅうよんにち",
+      "jp_kana": "もくようび ろくがつ にじゅうよっか",
       "jp_kanji": "木曜日 6月24日",
       "irregular": false
     },
@@ -13800,7 +13800,7 @@
       "id": "fulldate_3_7_24",
       "category": "full_date",
       "en": "Thursday, July 24th (7/24)",
-      "jp_kana": "もくようび しちがつ にじゅうよんにち",
+      "jp_kana": "もくようび しちがつ にじゅうよっか",
       "jp_kanji": "木曜日 7月24日",
       "irregular": true
     },
@@ -14048,7 +14048,7 @@
       "id": "fulldate_3_8_24",
       "category": "full_date",
       "en": "Thursday, August 24th (8/24)",
-      "jp_kana": "もくようび はちがつ にじゅうよんにち",
+      "jp_kana": "もくようび はちがつ にじゅうよっか",
       "jp_kanji": "木曜日 8月24日",
       "irregular": false
     },
@@ -14296,7 +14296,7 @@
       "id": "fulldate_3_9_24",
       "category": "full_date",
       "en": "Thursday, September 24th (9/24)",
-      "jp_kana": "もくようび くがつ にじゅうよんにち",
+      "jp_kana": "もくようび くがつ にじゅうよっか",
       "jp_kanji": "木曜日 9月24日",
       "irregular": true
     },
@@ -14536,7 +14536,7 @@
       "id": "fulldate_3_10_24",
       "category": "full_date",
       "en": "Thursday, October 24th (10/24)",
-      "jp_kana": "もくようび じゅうがつ にじゅうよんにち",
+      "jp_kana": "もくようび じゅうがつ にじゅうよっか",
       "jp_kanji": "木曜日 10月24日",
       "irregular": false
     },
@@ -14784,7 +14784,7 @@
       "id": "fulldate_3_11_24",
       "category": "full_date",
       "en": "Thursday, November 24th (11/24)",
-      "jp_kana": "もくようび じゅういちがつ にじゅうよんにち",
+      "jp_kana": "もくようび じゅういちがつ にじゅうよっか",
       "jp_kanji": "木曜日 11月24日",
       "irregular": false
     },
@@ -15024,7 +15024,7 @@
       "id": "fulldate_3_12_24",
       "category": "full_date",
       "en": "Thursday, December 24th (12/24)",
-      "jp_kana": "もくようび じゅうにがつ にじゅうよんにち",
+      "jp_kana": "もくようび じゅうにがつ にじゅうよっか",
       "jp_kanji": "木曜日 12月24日",
       "irregular": false
     },
@@ -15272,7 +15272,7 @@
       "id": "fulldate_4_1_24",
       "category": "full_date",
       "en": "Friday, January 24th (1/24)",
-      "jp_kana": "きんようび いちがつ にじゅうよんにち",
+      "jp_kana": "きんようび いちがつ にじゅうよっか",
       "jp_kanji": "金曜日 1月24日",
       "irregular": false
     },
@@ -15520,7 +15520,7 @@
       "id": "fulldate_4_2_24",
       "category": "full_date",
       "en": "Friday, February 24th (2/24)",
-      "jp_kana": "きんようび にがつ にじゅうよんにち",
+      "jp_kana": "きんようび にがつ にじゅうよっか",
       "jp_kanji": "金曜日 2月24日",
       "irregular": false
     },
@@ -15752,7 +15752,7 @@
       "id": "fulldate_4_3_24",
       "category": "full_date",
       "en": "Friday, March 24th (3/24)",
-      "jp_kana": "きんようび さんがつ にじゅうよんにち",
+      "jp_kana": "きんようび さんがつ にじゅうよっか",
       "jp_kanji": "金曜日 3月24日",
       "irregular": false
     },
@@ -16000,7 +16000,7 @@
       "id": "fulldate_4_4_24",
       "category": "full_date",
       "en": "Friday, April 24th (4/24)",
-      "jp_kana": "きんようび よんがつ にじゅうよんにち",
+      "jp_kana": "きんようび よんがつ にじゅうよっか",
       "jp_kanji": "金曜日 4月24日",
       "irregular": true
     },
@@ -16240,7 +16240,7 @@
       "id": "fulldate_4_5_24",
       "category": "full_date",
       "en": "Friday, May 24th (5/24)",
-      "jp_kana": "きんようび ごがつ にじゅうよんにち",
+      "jp_kana": "きんようび ごがつ にじゅうよっか",
       "jp_kanji": "金曜日 5月24日",
       "irregular": false
     },
@@ -16488,7 +16488,7 @@
       "id": "fulldate_4_6_24",
       "category": "full_date",
       "en": "Friday, June 24th (6/24)",
-      "jp_kana": "きんようび ろくがつ にじゅうよんにち",
+      "jp_kana": "きんようび ろくがつ にじゅうよっか",
       "jp_kanji": "金曜日 6月24日",
       "irregular": false
     },
@@ -16728,7 +16728,7 @@
       "id": "fulldate_4_7_24",
       "category": "full_date",
       "en": "Friday, July 24th (7/24)",
-      "jp_kana": "きんようび しちがつ にじゅうよんにち",
+      "jp_kana": "きんようび しちがつ にじゅうよっか",
       "jp_kanji": "金曜日 7月24日",
       "irregular": true
     },
@@ -16976,7 +16976,7 @@
       "id": "fulldate_4_8_24",
       "category": "full_date",
       "en": "Friday, August 24th (8/24)",
-      "jp_kana": "きんようび はちがつ にじゅうよんにち",
+      "jp_kana": "きんようび はちがつ にじゅうよっか",
       "jp_kanji": "金曜日 8月24日",
       "irregular": false
     },
@@ -17224,7 +17224,7 @@
       "id": "fulldate_4_9_24",
       "category": "full_date",
       "en": "Friday, September 24th (9/24)",
-      "jp_kana": "きんようび くがつ にじゅうよんにち",
+      "jp_kana": "きんようび くがつ にじゅうよっか",
       "jp_kanji": "金曜日 9月24日",
       "irregular": true
     },
@@ -17464,7 +17464,7 @@
       "id": "fulldate_4_10_24",
       "category": "full_date",
       "en": "Friday, October 24th (10/24)",
-      "jp_kana": "きんようび じゅうがつ にじゅうよんにち",
+      "jp_kana": "きんようび じゅうがつ にじゅうよっか",
       "jp_kanji": "金曜日 10月24日",
       "irregular": false
     },
@@ -17712,7 +17712,7 @@
       "id": "fulldate_4_11_24",
       "category": "full_date",
       "en": "Friday, November 24th (11/24)",
-      "jp_kana": "きんようび じゅういちがつ にじゅうよんにち",
+      "jp_kana": "きんようび じゅういちがつ にじゅうよっか",
       "jp_kanji": "金曜日 11月24日",
       "irregular": false
     },
@@ -17952,7 +17952,7 @@
       "id": "fulldate_4_12_24",
       "category": "full_date",
       "en": "Friday, December 24th (12/24)",
-      "jp_kana": "きんようび じゅうにがつ にじゅうよんにち",
+      "jp_kana": "きんようび じゅうにがつ にじゅうよっか",
       "jp_kanji": "金曜日 12月24日",
       "irregular": false
     },
@@ -18200,7 +18200,7 @@
       "id": "fulldate_5_1_24",
       "category": "full_date",
       "en": "Saturday, January 24th (1/24)",
-      "jp_kana": "どようび いちがつ にじゅうよんにち",
+      "jp_kana": "どようび いちがつ にじゅうよっか",
       "jp_kanji": "土曜日 1月24日",
       "irregular": false
     },
@@ -18448,7 +18448,7 @@
       "id": "fulldate_5_2_24",
       "category": "full_date",
       "en": "Saturday, February 24th (2/24)",
-      "jp_kana": "どようび にがつ にじゅうよんにち",
+      "jp_kana": "どようび にがつ にじゅうよっか",
       "jp_kanji": "土曜日 2月24日",
       "irregular": false
     },
@@ -18680,7 +18680,7 @@
       "id": "fulldate_5_3_24",
       "category": "full_date",
       "en": "Saturday, March 24th (3/24)",
-      "jp_kana": "どようび さんがつ にじゅうよんにち",
+      "jp_kana": "どようび さんがつ にじゅうよっか",
       "jp_kanji": "土曜日 3月24日",
       "irregular": false
     },
@@ -18928,7 +18928,7 @@
       "id": "fulldate_5_4_24",
       "category": "full_date",
       "en": "Saturday, April 24th (4/24)",
-      "jp_kana": "どようび よんがつ にじゅうよんにち",
+      "jp_kana": "どようび よんがつ にじゅうよっか",
       "jp_kanji": "土曜日 4月24日",
       "irregular": true
     },
@@ -19168,7 +19168,7 @@
       "id": "fulldate_5_5_24",
       "category": "full_date",
       "en": "Saturday, May 24th (5/24)",
-      "jp_kana": "どようび ごがつ にじゅうよんにち",
+      "jp_kana": "どようび ごがつ にじゅうよっか",
       "jp_kanji": "土曜日 5月24日",
       "irregular": false
     },
@@ -19416,7 +19416,7 @@
       "id": "fulldate_5_6_24",
       "category": "full_date",
       "en": "Saturday, June 24th (6/24)",
-      "jp_kana": "どようび ろくがつ にじゅうよんにち",
+      "jp_kana": "どようび ろくがつ にじゅうよっか",
       "jp_kanji": "土曜日 6月24日",
       "irregular": false
     },
@@ -19656,7 +19656,7 @@
       "id": "fulldate_5_7_24",
       "category": "full_date",
       "en": "Saturday, July 24th (7/24)",
-      "jp_kana": "どようび しちがつ にじゅうよんにち",
+      "jp_kana": "どようび しちがつ にじゅうよっか",
       "jp_kanji": "土曜日 7月24日",
       "irregular": true
     },
@@ -19904,7 +19904,7 @@
       "id": "fulldate_5_8_24",
       "category": "full_date",
       "en": "Saturday, August 24th (8/24)",
-      "jp_kana": "どようび はちがつ にじゅうよんにち",
+      "jp_kana": "どようび はちがつ にじゅうよっか",
       "jp_kanji": "土曜日 8月24日",
       "irregular": false
     },
@@ -20152,7 +20152,7 @@
       "id": "fulldate_5_9_24",
       "category": "full_date",
       "en": "Saturday, September 24th (9/24)",
-      "jp_kana": "どようび くがつ にじゅうよんにち",
+      "jp_kana": "どようび くがつ にじゅうよっか",
       "jp_kanji": "土曜日 9月24日",
       "irregular": true
     },
@@ -20392,7 +20392,7 @@
       "id": "fulldate_5_10_24",
       "category": "full_date",
       "en": "Saturday, October 24th (10/24)",
-      "jp_kana": "どようび じゅうがつ にじゅうよんにち",
+      "jp_kana": "どようび じゅうがつ にじゅうよっか",
       "jp_kanji": "土曜日 10月24日",
       "irregular": false
     },
@@ -20640,7 +20640,7 @@
       "id": "fulldate_5_11_24",
       "category": "full_date",
       "en": "Saturday, November 24th (11/24)",
-      "jp_kana": "どようび じゅういちがつ にじゅうよんにち",
+      "jp_kana": "どようび じゅういちがつ にじゅうよっか",
       "jp_kanji": "土曜日 11月24日",
       "irregular": false
     },
@@ -20880,7 +20880,7 @@
       "id": "fulldate_5_12_24",
       "category": "full_date",
       "en": "Saturday, December 24th (12/24)",
-      "jp_kana": "どようび じゅうにがつ にじゅうよんにち",
+      "jp_kana": "どようび じゅうにがつ にじゅうよっか",
       "jp_kanji": "土曜日 12月24日",
       "irregular": false
     },
@@ -21128,7 +21128,7 @@
       "id": "fulldate_6_1_24",
       "category": "full_date",
       "en": "Sunday, January 24th (1/24)",
-      "jp_kana": "にちようび いちがつ にじゅうよんにち",
+      "jp_kana": "にちようび いちがつ にじゅうよっか",
       "jp_kanji": "日曜日 1月24日",
       "irregular": false
     },
@@ -21376,7 +21376,7 @@
       "id": "fulldate_6_2_24",
       "category": "full_date",
       "en": "Sunday, February 24th (2/24)",
-      "jp_kana": "にちようび にがつ にじゅうよんにち",
+      "jp_kana": "にちようび にがつ にじゅうよっか",
       "jp_kanji": "日曜日 2月24日",
       "irregular": false
     },
@@ -21608,7 +21608,7 @@
       "id": "fulldate_6_3_24",
       "category": "full_date",
       "en": "Sunday, March 24th (3/24)",
-      "jp_kana": "にちようび さんがつ にじゅうよんにち",
+      "jp_kana": "にちようび さんがつ にじゅうよっか",
       "jp_kanji": "日曜日 3月24日",
       "irregular": false
     },
@@ -21856,7 +21856,7 @@
       "id": "fulldate_6_4_24",
       "category": "full_date",
       "en": "Sunday, April 24th (4/24)",
-      "jp_kana": "にちようび よんがつ にじゅうよんにち",
+      "jp_kana": "にちようび よんがつ にじゅうよっか",
       "jp_kanji": "日曜日 4月24日",
       "irregular": true
     },
@@ -22096,7 +22096,7 @@
       "id": "fulldate_6_5_24",
       "category": "full_date",
       "en": "Sunday, May 24th (5/24)",
-      "jp_kana": "にちようび ごがつ にじゅうよんにち",
+      "jp_kana": "にちようび ごがつ にじゅうよっか",
       "jp_kanji": "日曜日 5月24日",
       "irregular": false
     },
@@ -22344,7 +22344,7 @@
       "id": "fulldate_6_6_24",
       "category": "full_date",
       "en": "Sunday, June 24th (6/24)",
-      "jp_kana": "にちようび ろくがつ にじゅうよんにち",
+      "jp_kana": "にちようび ろくがつ にじゅうよっか",
       "jp_kanji": "日曜日 6月24日",
       "irregular": false
     },
@@ -22584,7 +22584,7 @@
       "id": "fulldate_6_7_24",
       "category": "full_date",
       "en": "Sunday, July 24th (7/24)",
-      "jp_kana": "にちようび しちがつ にじゅうよんにち",
+      "jp_kana": "にちようび しちがつ にじゅうよっか",
       "jp_kanji": "日曜日 7月24日",
       "irregular": true
     },
@@ -22832,7 +22832,7 @@
       "id": "fulldate_6_8_24",
       "category": "full_date",
       "en": "Sunday, August 24th (8/24)",
-      "jp_kana": "にちようび はちがつ にじゅうよんにち",
+      "jp_kana": "にちようび はちがつ にじゅうよっか",
       "jp_kanji": "日曜日 8月24日",
       "irregular": false
     },
@@ -23080,7 +23080,7 @@
       "id": "fulldate_6_9_24",
       "category": "full_date",
       "en": "Sunday, September 24th (9/24)",
-      "jp_kana": "にちようび くがつ にじゅうよんにち",
+      "jp_kana": "にちようび くがつ にじゅうよっか",
       "jp_kanji": "日曜日 9月24日",
       "irregular": true
     },
@@ -23320,7 +23320,7 @@
       "id": "fulldate_6_10_24",
       "category": "full_date",
       "en": "Sunday, October 24th (10/24)",
-      "jp_kana": "にちようび じゅうがつ にじゅうよんにち",
+      "jp_kana": "にちようび じゅうがつ にじゅうよっか",
       "jp_kanji": "日曜日 10月24日",
       "irregular": false
     },
@@ -23568,7 +23568,7 @@
       "id": "fulldate_6_11_24",
       "category": "full_date",
       "en": "Sunday, November 24th (11/24)",
-      "jp_kana": "にちようび じゅういちがつ にじゅうよんにち",
+      "jp_kana": "にちようび じゅういちがつ にじゅうよっか",
       "jp_kanji": "日曜日 11月24日",
       "irregular": false
     },
@@ -23808,7 +23808,7 @@
       "id": "fulldate_6_12_24",
       "category": "full_date",
       "en": "Sunday, December 24th (12/24)",
-      "jp_kana": "にちようび じゅうにがつ にじゅうよんにち",
+      "jp_kana": "にちようび じゅうにがつ にじゅうよっか",
       "jp_kanji": "日曜日 12月24日",
       "irregular": false
     },

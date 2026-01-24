@@ -1,6 +1,6 @@
 // Changelog:
-// - v2.0.1: audio hotkey, typing enter-to-next behavior, cache bump.
-const VERSION = "2.0.1";
+// - v2.0.3: update audio hotkey, auto-focus typing input on keypress.
+const VERSION = "2.0.3";
 const CACHE_NAME = `kats-date-game-cache-v${VERSION}`;
 const ASSETS = [
   "./",
