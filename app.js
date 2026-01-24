@@ -1,8 +1,12 @@
+// Changelog:
+// - v2.0.0: token-based audio sequencing, base audio tokens, caching improvements, cache bump.
 (() => {
+  const APP_VERSION = "2.0.0";
   const STATE_KEY = "kats-date-game-state-v1";
   const DATA_URL = "date_game_data.json";
-  const AUDIO_MANIFEST_URL = "Audio/manifest.json";
+  const AUDIO_MANIFEST_URL = "Audio/base/manifest.json";
   const VOICEVOX_SPEAKER = "東北きりたん（ノーマル）";
+  const DEFAULT_PAUSE_TOKEN = "pause_120";
 
   const CATEGORY_LABELS = {
     day_of_month: "Day of the month (example: 7th)",
@@ -18,7 +22,9 @@
     answerMode: "multiple", // multiple | typing | mixed
     displayMode: "kana", // kana | kanji | both
     questionsPerQuiz: 20,
-    focusMode: "all" // all | irregular
+    focusMode: "all", // all | irregular
+    audioEnabled: true,
+    audioVolume: 1
   };
 
   let DATA = null;
@@ -29,6 +35,8 @@
   let audioManifestError = false;
   let audioContext = null;
   let audioBufferCache = new Map();
+  let activeSequenceId = 0;
+  let activeAudioSources = [];
 
   function loadState(){
     try{
@@ -74,15 +82,6 @@
     return item.jp_kana || item.jp_kanji || "";
   }
 
-  function audioKey(item){
-    return item.id;
-  }
-
-  function getAudioPath(item){
-    const key = audioKey(item);
-    return audioIndex.get(key) || null;
-  }
-
   function getAudioContext(){
     if(!audioContext){
       const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -101,30 +100,78 @@
       audioBufferCache.set(src, buffer);
       return buffer;
     }catch(e){
+      console.warn(`Audio load failed: ${src}`, e);
       return null;
     }
   }
 
-  async function playAudioForItem(item){
-    const src = getAudioPath(item);
-    if(!src) return;
+  function stopActiveAudio(){
+    activeAudioSources.forEach((source) => {
+      try{ source.stop(); }catch(e){}
+    });
+    activeAudioSources = [];
+  }
+
+  function getVolume(){
+    const volume = Number(state.audioVolume);
+    if(Number.isFinite(volume)){
+      return Math.max(0, Math.min(volume, 1));
+    }
+    return 1;
+  }
+
+  function playBuffer(buffer, ctx, sequenceId){
+    return new Promise((resolve) => {
+      if(sequenceId !== activeSequenceId){
+        resolve();
+        return;
+      }
+      const source = ctx.createBufferSource();
+      const gainNode = ctx.createGain();
+      gainNode.gain.value = getVolume();
+      source.buffer = buffer;
+      source.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      activeAudioSources.push(source);
+      source.onended = () => {
+        activeAudioSources = activeAudioSources.filter(s => s !== source);
+        resolve();
+      };
+      try{
+        source.start(0);
+      }catch(e){
+        resolve();
+      }
+    });
+  }
+
+  async function playAudioSequence(tokens){
+    if(!state.audioEnabled) return;
     const ctx = getAudioContext();
     if(!ctx) return;
-    try{
-      await ctx.resume();
+    activeSequenceId += 1;
+    const sequenceId = activeSequenceId;
+    stopActiveAudio();
+    try{ await ctx.resume(); }catch(e){}
+
+    for(const token of tokens){
+      if(sequenceId !== activeSequenceId) return;
+      const src = audioIndex.get(token);
+      if(!src){
+        console.warn(`Missing audio token: ${token}`);
+        continue;
+      }
       const buffer = await getAudioBuffer(src, ctx);
-      if(!buffer) return;
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
-      source.connect(ctx.destination);
-      source.start(0);
-    }catch(e){
-      // ignore playback errors
+      if(!buffer){
+        console.warn(`Unable to decode audio token: ${token}`);
+        continue;
+      }
+      if(sequenceId !== activeSequenceId) return;
+      await playBuffer(buffer, ctx, sequenceId);
     }
   }
 
-  function buildVoicevoxLine(item, index){
-    const text = item.jp_kana || item.jp_kanji || item.en || "";
+  function buildVoicevoxLine(text, index){
     const idx = String(index).padStart(3, "0");
     return `${idx}_${VOICEVOX_SPEAKER}_${text}`;
   }
@@ -173,28 +220,128 @@
         return;
       }
       const data = await res.json();
-      let files = [];
-      if(Array.isArray(data)) files = data;
-      else if(Array.isArray(data.files)) files = data.files;
-      else if(Array.isArray(data.items)) files = data.items;
-      else if(Array.isArray(data.manifest)) files = data.manifest;
-
-      files.forEach((file) => {
-        if(typeof file !== "string") return;
-        const clean = file.replace(/^\.\//, "");
-        const path = clean.startsWith("Audio/") ? clean : `Audio/${clean}`;
-        const base = clean.split("/").pop().replace(/\.[^.]+$/, "");
-        if(base) audioIndex.set(base, path);
-      });
+      const tokenMap = data.tokens || data.mapping || data.map || data;
+      if(tokenMap && typeof tokenMap === "object"){
+        Object.entries(tokenMap).forEach(([token, file]) => {
+          if(typeof file !== "string") return;
+          const clean = file.replace(/^\.\//, "");
+          const path = clean.startsWith("Audio/") ? clean : `Audio/${clean}`;
+          if(token) audioIndex.set(token, path);
+        });
+      }
       audioManifestLoaded = true;
     }catch(e){
       audioManifestError = true;
     }
   }
 
-  function getMissingAudioItems(){
-    if(!audioManifestLoaded) return DATA.items.slice();
-    return DATA.items.filter(item => !audioIndex.has(audioKey(item)));
+  function getBaseTokenEntries(){
+    if(!DATA) return [];
+    const monthItems = DATA.items.filter(item => item.category === "months");
+    const weekdayItems = DATA.items.filter(item => item.category === "weekdays");
+    const domItems = DATA.items.filter(item => item.category === "day_of_month");
+
+    const months = monthItems
+      .map(item => ({item, num: parseInt(item.id.split("_")[1], 10)}))
+      .filter(({num}) => Number.isFinite(num))
+      .sort((a,b) => a.num - b.num)
+      .map(({item, num}) => ({
+        token: `month_${num}`,
+        label: item.en,
+        text: item.jp_kana || item.jp_kanji || item.en
+      }));
+
+    const weekdays = weekdayItems
+      .map(item => ({item, num: parseInt(item.id.split("_")[1], 10)}))
+      .filter(({num}) => Number.isFinite(num))
+      .sort((a,b) => a.num - b.num)
+      .map(({item, num}) => ({
+        token: `weekday_${num + 1}`,
+        label: item.en,
+        text: item.jp_kana || item.jp_kanji || item.en
+      }));
+
+    const days = domItems
+      .map(item => ({item, num: parseInt(item.id.split("_")[1], 10)}))
+      .filter(({num}) => Number.isFinite(num))
+      .sort((a,b) => a.num - b.num)
+      .map(({item, num}) => ({
+        token: `day_${num}`,
+        label: item.en,
+        text: item.jp_kana || item.jp_kanji || item.en
+      }));
+
+    return [...months, ...weekdays, ...days];
+  }
+
+  function getMissingAudioTokens(){
+    const tokens = getBaseTokenEntries();
+    if(!audioManifestLoaded) return tokens;
+    return tokens.filter(entry => !audioIndex.has(entry.token));
+  }
+
+  function normalizeWeekdayNumber(value){
+    if(!Number.isFinite(value)) return null;
+    if(value === 0) return 1;
+    if(value >= 1 && value <= 7) return value;
+    if(value >= 0 && value <= 6) return value + 1;
+    return null;
+  }
+
+  function parseItemNumbers(item){
+    const result = {
+      month: Number.isFinite(item.month) ? item.month : null,
+      day: Number.isFinite(item.day) ? item.day : null,
+      weekday: Number.isFinite(item.weekday) ? normalizeWeekdayNumber(item.weekday) : null
+    };
+
+    const id = item.id || "";
+    const monthMatch = id.match(/^month_(\d+)$/);
+    if(monthMatch) result.month = parseInt(monthMatch[1], 10);
+
+    const weekdayMatch = id.match(/^weekday_(\d+)$/);
+    if(weekdayMatch) result.weekday = normalizeWeekdayNumber(parseInt(weekdayMatch[1], 10));
+
+    const domMatch = id.match(/^dom_(\d+)$/);
+    if(domMatch) result.day = parseInt(domMatch[1], 10);
+
+    const dateMatch = id.match(/^date_(\d+)_(\d+)$/);
+    if(dateMatch){
+      result.month = parseInt(dateMatch[1], 10);
+      result.day = parseInt(dateMatch[2], 10);
+    }
+
+    const fullDateMatch = id.match(/^fulldate_(\d+)_(\d+)_(\d+)$/);
+    if(fullDateMatch){
+      result.weekday = normalizeWeekdayNumber(parseInt(fullDateMatch[1], 10));
+      result.month = parseInt(fullDateMatch[2], 10);
+      result.day = parseInt(fullDateMatch[3], 10);
+    }
+
+    return result;
+  }
+
+  function getAudioTokensForItem(item){
+    const {month, day, weekday} = parseItemNumbers(item);
+    switch(item.category){
+      case "months":
+        return month ? [`month_${month}`] : [];
+      case "weekdays":
+        return weekday ? [`weekday_${weekday}`] : [];
+      case "day_of_month":
+        return day ? [`day_${day}`] : [];
+      case "dates":
+        return (month && day) ? [`month_${month}`, `day_${day}`] : [];
+      case "full_date": {
+        if(!weekday || !month || !day) return [];
+        const tokens = [`weekday_${weekday}`];
+        if(audioIndex.has(DEFAULT_PAUSE_TOKEN)) tokens.push(DEFAULT_PAUSE_TOKEN);
+        tokens.push(`month_${month}`, `day_${day}`);
+        return tokens;
+      }
+      default:
+        return [];
+    }
   }
 
   function sample(arr, n){
@@ -346,11 +493,11 @@
       ]),
 
       (() => {
-        const missingItems = getMissingAudioItems();
-        const totalItems = DATA.items.length;
-        const availableCount = Math.max(0, totalItems - missingItems.length);
+        const missingTokens = getMissingAudioTokens();
+        const totalTokens = getBaseTokenEntries().length;
+        const availableCount = Math.max(0, totalTokens - missingTokens.length);
         const audioLabel = audioManifestLoaded
-          ? `${availableCount} ready • ${missingItems.length} missing`
+          ? `${availableCount} ready • ${missingTokens.length} missing`
           : (audioManifestError ? "Manifest error" : "Manifest not loaded");
 
         return el("div", {class:"row"}, [
@@ -360,6 +507,44 @@
             el("div", {class:"count"}, [audioLabel])
           ])
         ]);
+      })(),
+
+      el("div", {class:"label"}, ["Audio"]),
+      (() => {
+        const row = el("div", {class:"row"});
+        const toggleInput = el("input", {type:"checkbox"});
+        toggleInput.checked = !!state.audioEnabled;
+        const toggle = el("label", {class:"toggle-row"}, [
+          toggleInput,
+          el("span", {}, ["Enable audio"])
+        ]);
+        const volumeWrap = el("div", {class:"volume-row"});
+        const volumeLabel = el("span", {class:"small"}, [`Volume: ${Math.round(getVolume() * 100)}%`]);
+        const volume = el("input", {
+          type:"range",
+          min:"0",
+          max:"1",
+          step:"0.05",
+          value:String(getVolume()),
+          class:"slider"
+        });
+        toggleInput.addEventListener("change", (e) => {
+          state.audioEnabled = e.target.checked;
+          if(!state.audioEnabled){
+            stopActiveAudio();
+          }
+          saveState();
+        });
+        volume.addEventListener("input", (e) => {
+          state.audioVolume = parseFloat(e.target.value);
+          volumeLabel.textContent = `Volume: ${Math.round(getVolume() * 100)}%`;
+          saveState();
+        });
+        volumeWrap.appendChild(volumeLabel);
+        volumeWrap.appendChild(volume);
+        row.appendChild(toggle);
+        row.appendChild(volumeWrap);
+        return row;
       })(),
 
       el("div", {class:"help"}, [
@@ -421,33 +606,34 @@
     const root = document.getElementById("root");
     root.innerHTML = "";
 
-    const missingItems = getMissingAudioItems();
+    const missingTokens = getMissingAudioTokens();
+    const baseTokens = getBaseTokenEntries();
 
     const title = audioManifestLoaded
       ? "Missing audio"
       : "Missing audio (manifest not loaded)";
     const subtitle = audioManifestLoaded
-      ? `${missingItems.length} missing • ${DATA.items.length} total`
+      ? `${missingTokens.length} missing • ${baseTokens.length} total`
       : (audioManifestError
         ? "Audio manifest found, but it could not be parsed."
-        : "Add Audio/manifest.json then refresh to see exact missing files.");
+        : "Add Audio/base/manifest.json then refresh to see exact missing files.");
 
     const list = el("div", {class:"audio-list"});
-    if(missingItems.length === 0){
+    if(missingTokens.length === 0){
       list.appendChild(el("div", {class:"word-empty"}, ["Everything has audio."]));
     }else{
-      missingItems.forEach((item) => {
+      missingTokens.forEach((entry) => {
         list.appendChild(el("div", {class:"audio-row"}, [
-          el("div", {class:"audio-main"}, [getJP(item)]),
-          el("div", {class:"audio-sub"}, [item.en]),
-          el("div", {class:"audio-file"}, [`Expected: ${audioKey(item)}.wav`])
+          el("div", {class:"audio-main"}, [entry.label]),
+          el("div", {class:"audio-sub"}, [entry.text]),
+          el("div", {class:"audio-file"}, [`Token: ${entry.token}`])
         ]));
       });
     }
 
     const downloadBtn = el("button", {class:"btn secondary"}, ["Download Voicevox list (.txt)"]);
     downloadBtn.addEventListener("click", () => {
-      const lines = missingItems.map((item, idx) => buildVoicevoxLine(item, idx + 1));
+      const lines = missingTokens.map((entry, idx) => buildVoicevoxLine(entry.text, idx + 1));
       const blob = new Blob([lines.join("\n")], {type: "text/plain"});
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -458,7 +644,7 @@
       link.remove();
       URL.revokeObjectURL(url);
     });
-    if(missingItems.length === 0){
+    if(missingTokens.length === 0){
       downloadBtn.disabled = true;
     }
 
@@ -470,7 +656,7 @@
       el("div", {class:"subq"}, [subtitle]),
       el("div", {class:"row"}, [downloadBtn]),
       el("div", {class:"help"}, [
-        "Audio files should live in the Audio/ folder and be named with the item id (example: month_1.wav)."
+        "Audio files should live in the Audio/ folder and be referenced by tokens in Audio/base/manifest.json."
       ]),
       list
     ]);
@@ -515,7 +701,7 @@
     const item = quiz.items[quiz.idx];
     const meta = getPromptAndAnswer(item);
     const mode = pickAnswerMode();
-    const audioPath = getAudioPath(item);
+    const audioTokens = getAudioTokensForItem(item);
 
     const top = el("div", {class:"quiz-top"}, [
       el("div", {class:"pill"}, [`${quiz.idx+1} / ${quiz.items.length}`]),
@@ -529,9 +715,9 @@
     ]);
 
     const card = el("div", {class:"card"}, [top, q, sub]);
-    if(audioPath){
+    if(audioTokens.length > 0){
       const audioRow = el("div", {class:"audio-controls"}, [
-        el("button", {class:"btn secondary small", onclick: () => playAudioForItem(item)}, ["Play audio"])
+        el("button", {class:"btn secondary small", onclick: () => playAudioSequence(audioTokens)}, ["Play audio"])
       ]);
       card.appendChild(audioRow);
     }
@@ -661,6 +847,13 @@
     const res = await fetch(DATA_URL);
     DATA = await res.json();
     await loadAudioManifest();
+    document.querySelectorAll("[data-version]").forEach((node) => {
+      node.textContent = `v${APP_VERSION}`;
+    });
+    const subtitle = document.querySelector("[data-version-subtitle]");
+    if(subtitle){
+      subtitle.textContent = `PWA • v${APP_VERSION}`;
+    }
 
     // Footer buttons
     document.getElementById("btnSettings").addEventListener("click", () => renderSettings());

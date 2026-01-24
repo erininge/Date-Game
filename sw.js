@@ -1,4 +1,6 @@
-const VERSION = "1.8";
+// Changelog:
+// - v2.0.0: token-based audio sequencing, base audio tokens, caching improvements, cache bump.
+const VERSION = "2.0.0";
 const CACHE_NAME = `kats-date-game-cache-v${VERSION}`;
 const ASSETS = [
   "./",
@@ -6,7 +8,7 @@ const ASSETS = [
   "./styles.css",
   "./app.js",
   "./manifest.json",
-  "./Audio/manifest.json",
+  "./Audio/base/manifest.json",
   "./date_game_data.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
