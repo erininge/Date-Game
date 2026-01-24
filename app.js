@@ -1,12 +1,13 @@
 // Changelog:
-// - v2.0.0: token-based audio sequencing, base audio tokens, caching improvements, cache bump.
+// - v2.0.1: audio hotkey, typing enter-to-next behavior, cache bump.
 (() => {
-  const APP_VERSION = "2.0.0";
+  const APP_VERSION = "2.0.1";
   const STATE_KEY = "kats-date-game-state-v1";
   const DATA_URL = "date_game_data.json";
   const AUDIO_MANIFEST_URL = "Audio/base/manifest.json";
   const VOICEVOX_SPEAKER = "東北きりたん（ノーマル）";
   const DEFAULT_PAUSE_TOKEN = "pause_120";
+  const AUDIO_HOTKEY = "KeyP";
 
   const CATEGORY_LABELS = {
     day_of_month: "Day of the month (example: 7th)",
@@ -37,6 +38,7 @@
   let audioBufferCache = new Map();
   let activeSequenceId = 0;
   let activeAudioSources = [];
+  let currentAudioTokens = [];
 
   function loadState(){
     try{
@@ -118,6 +120,21 @@
       return Math.max(0, Math.min(volume, 1));
     }
     return 1;
+  }
+
+  function isTypingTarget(target){
+    if(!target) return false;
+    if(target.isContentEditable) return true;
+    const tag = target.tagName ? target.tagName.toLowerCase() : "";
+    return tag === "input" || tag === "textarea" || tag === "select";
+  }
+
+  function handleAudioHotkey(event){
+    if(event.code !== AUDIO_HOTKEY) return;
+    if(isTypingTarget(event.target)) return;
+    if(!currentAudioTokens || currentAudioTokens.length === 0) return;
+    event.preventDefault();
+    playAudioSequence(currentAudioTokens);
   }
 
   function playBuffer(buffer, ctx, sequenceId){
@@ -377,6 +394,7 @@
   function renderSettings(){
     const root = document.getElementById("root");
     root.innerHTML = "";
+    currentAudioTokens = [];
 
     const selectedItems = eligibleItems();
 
@@ -702,6 +720,7 @@
     const meta = getPromptAndAnswer(item);
     const mode = pickAnswerMode();
     const audioTokens = getAudioTokensForItem(item);
+    currentAudioTokens = audioTokens;
 
     const top = el("div", {class:"quiz-top"}, [
       el("div", {class:"pill"}, [`${quiz.idx+1} / ${quiz.items.length}`]),
@@ -717,7 +736,8 @@
     const card = el("div", {class:"card"}, [top, q, sub]);
     if(audioTokens.length > 0){
       const audioRow = el("div", {class:"audio-controls"}, [
-        el("button", {class:"btn secondary small", onclick: () => playAudioSequence(audioTokens)}, ["Play audio"])
+        el("button", {class:"btn secondary small", onclick: () => playAudioSequence(audioTokens)}, ["Play audio"]),
+        el("div", {class:"help"}, ["Shortcut: P"])
       ]);
       card.appendChild(audioRow);
     }
@@ -755,7 +775,25 @@
         el("button", {class:"btn"}, ["Skip"])
       ]);
 
-      btnRow.children[0].addEventListener("click", () => {
+      let awaitingNext = false;
+      const checkBtn = btnRow.children[0];
+
+      function resetCheckState(){
+        awaitingNext = false;
+        checkBtn.textContent = "Check";
+      }
+
+      function markReadyForNext(){
+        awaitingNext = true;
+        checkBtn.textContent = "Next";
+      }
+
+      checkBtn.addEventListener("click", () => {
+        if(awaitingNext){
+          nextQuestion();
+          return;
+        }
+
         const user = inp.value;
         let ok = false;
 
@@ -785,11 +823,12 @@
             feedback.textContent = "✅ correct (but already missed)";
             feedback.style.color = "rgba(245,158,11,0.9)";
           }
-          setTimeout(() => nextQuestion(), 600);
+          markReadyForNext();
         }else{
           quiz.typingMisses.add(quiz.idx);
           feedback.textContent = `❌ not quite. Correct: ${meta.answer}`;
           feedback.style.color = "rgba(239,68,68,0.9)";
+          resetCheckState();
         }
       });
 
@@ -803,7 +842,12 @@
       card.appendChild(btnRow);
       card.appendChild(feedback);
       inp.focus();
-      inp.addEventListener("keydown", (e)=>{ if(e.key==="Enter"){ btnRow.children[0].click(); } });
+      inp.addEventListener("input", () => {
+        if(awaitingNext){
+          resetCheckState();
+        }
+      });
+      inp.addEventListener("keydown", (e)=>{ if(e.key==="Enter"){ checkBtn.click(); } });
     }
 
     root.appendChild(card);
@@ -821,6 +865,7 @@
   function renderResults(){
     const root = document.getElementById("root");
     root.innerHTML = "";
+    currentAudioTokens = [];
 
     const pct = Math.round((quiz.correct / quiz.items.length) * 100);
 
@@ -858,6 +903,7 @@
     // Footer buttons
     document.getElementById("btnSettings").addEventListener("click", () => renderSettings());
     document.getElementById("btnStartQuick").addEventListener("click", () => startQuiz());
+    document.addEventListener("keydown", handleAudioHotkey);
 
     renderSettings();
   }
