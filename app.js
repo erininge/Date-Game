@@ -1,7 +1,7 @@
 // Changelog:
-// - v2.0.3: update audio hotkey, auto-focus typing input on keypress.
+// - v2.0.8: accept numeric/word answers for full date prompts.
 (() => {
-  const APP_VERSION = "2.0.3";
+  const APP_VERSION = "2.0.8";
   const STATE_KEY = "kats-date-game-state-v1";
   const DATA_URL = "date_game_data.json";
   const AUDIO_MANIFEST_URL = "Audio/base/manifest.json";
@@ -74,6 +74,78 @@
   }
   function normalizeEN(s){
     return (s||"").toLowerCase().replace(/\s+/g," ").trim();
+  }
+
+  function parseEnglishDateParts(text){
+    const match = (text || "").match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+    if(match){
+      return {words: match[1].trim(), numeric: match[2].trim()};
+    }
+    return {words: (text || "").trim(), numeric: null};
+  }
+
+  function normalizeDateNumeric(value){
+    const match = (value || "").trim().match(/^(\d{1,2})\/(\d{1,2})$/);
+    if(!match) return normalizeEN(value);
+    const month = String(parseInt(match[1], 10));
+    const day = String(parseInt(match[2], 10));
+    return `${month}/${day}`;
+  }
+
+  function buildDateAnswerVariants(item){
+    const {words, numeric} = parseEnglishDateParts(item.en || "");
+    const variants = new Set();
+    if(words){
+      variants.add(normalizeEN(words));
+    }
+    if(numeric){
+      const normalizedNumeric = normalizeDateNumeric(numeric);
+      variants.add(normalizedNumeric);
+      const [month, day] = normalizedNumeric.split("/");
+      if(month && day){
+        variants.add(`${month.padStart(2, "0")}/${day.padStart(2, "0")}`);
+      }
+      if(words){
+        variants.add(normalizeEN(`${words} ${normalizedNumeric}`));
+        variants.add(normalizeEN(`${normalizedNumeric} ${words}`));
+        variants.add(normalizeEN(`${words} ${numeric}`));
+        variants.add(normalizeEN(`${numeric} ${words}`));
+      }
+    }
+    return variants;
+  }
+
+  function parseEnglishFullDateParts(text){
+    const match = (text || "").match(/^([^,]+),\s*(.+?)\s*\(([^)]+)\)\s*$/);
+    if(match){
+      return {weekday: match[1].trim(), dateWords: match[2].trim(), numeric: match[3].trim()};
+    }
+    return {weekday: null, dateWords: (text || "").trim(), numeric: null};
+  }
+
+  function buildFullDateAnswerVariants(item){
+    const {weekday, dateWords, numeric} = parseEnglishFullDateParts(item.en || "");
+    const variants = new Set();
+    const weekdayPart = weekday ? normalizeEN(weekday) : null;
+    const dateWordsNorm = normalizeEN(dateWords);
+    if(weekdayPart && dateWordsNorm){
+      variants.add(normalizeEN(`${weekdayPart}, ${dateWordsNorm}`));
+      variants.add(normalizeEN(`${weekdayPart} ${dateWordsNorm}`));
+    }else if(dateWordsNorm){
+      variants.add(dateWordsNorm);
+    }
+    if(numeric && weekdayPart){
+      const normalizedNumeric = normalizeDateNumeric(numeric);
+      variants.add(normalizeEN(`${weekdayPart} ${normalizedNumeric}`));
+      variants.add(normalizeEN(`${weekdayPart}, ${normalizedNumeric}`));
+      const [month, day] = normalizedNumeric.split("/");
+      if(month && day){
+        const padded = `${month.padStart(2, "0")}/${day.padStart(2, "0")}`;
+        variants.add(normalizeEN(`${weekdayPart} ${padded}`));
+        variants.add(normalizeEN(`${weekdayPart}, ${padded}`));
+      }
+    }
+    return variants;
   }
 
   function getJP(item){
@@ -308,10 +380,13 @@
 
   function normalizeWeekdayNumber(value){
     if(!Number.isFinite(value)) return null;
-    if(value === 0) return 1;
-    if(value >= 1 && value <= 7) return value;
     if(value >= 0 && value <= 6) return value + 1;
+    if(value >= 1 && value <= 7) return value;
     return null;
+  }
+
+  function isStarred(item){
+    return !!(item && (item.starred || item.isStarred || item.star));
   }
 
   function parseItemNumbers(item){
@@ -386,10 +461,16 @@
       return;
     }
     const qCount = Math.max(1, Math.min(parseInt(state.questionsPerQuiz||20,10), 200));
-    const items = [];
-    while(items.length < qCount){
-      items.push(pool[Math.floor(Math.random()*pool.length)]);
+    const starredPool = pool.filter(item => isStarred(item));
+    const unstarredPool = pool.filter(item => !isStarred(item));
+    let items = sample(unstarredPool, unstarredPool.length)
+      .concat(sample(starredPool, starredPool.length));
+    if(qCount > items.length && starredPool.length > 0){
+      while(items.length < qCount){
+        items.push(starredPool[Math.floor(Math.random() * starredPool.length)]);
+      }
     }
+    items = sample(items, Math.min(qCount, items.length));
     quiz = {
       idx: 0,
       items,
@@ -819,7 +900,17 @@
             ok = normalizeJP(item.jp_kanji) === userN;
           }
         }else{
-          ok = normalizeEN(meta.answer) === normalizeEN(user);
+          if(state.category === "dates"){
+            const variants = buildDateAnswerVariants(item);
+            const userN = normalizeEN(user);
+            ok = variants.has(userN) || variants.has(normalizeDateNumeric(user));
+          }else if(state.category === "full_date"){
+            const variants = buildFullDateAnswerVariants(item);
+            const userN = normalizeEN(user);
+            ok = variants.has(userN) || variants.has(normalizeDateNumeric(user));
+          }else{
+            ok = normalizeEN(meta.answer) === normalizeEN(user);
+          }
         }
 
         if(ok){
