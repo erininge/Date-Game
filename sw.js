@@ -1,6 +1,6 @@
 // Changelog:
-// - v2.0.3: update audio hotkey, auto-focus typing input on keypress.
-const VERSION = "2.0.3";
+// - v2.0.8: accept numeric/word answers for full date prompts.
+const VERSION = "2.0.8";
 const CACHE_NAME = `kats-date-game-cache-v${VERSION}`;
 const ASSETS = [
   "./",
